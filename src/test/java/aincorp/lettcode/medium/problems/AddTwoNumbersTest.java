@@ -2,8 +2,6 @@ package aincorp.lettcode.medium.problems;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class AddTwoNumbersTest {
     @Test
     void addTwoNumbers() {
