@@ -1,14 +1,12 @@
 package aincorp.lettcode.medium.problems;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class LongestPalindromicSubstring {
 
     public String longestPalindrome(String s) {
-        String result = "";
-
-        if (s.equals(null)) {
+        if (s == null) {
             return null;
         }
 
@@ -16,30 +14,68 @@ public class LongestPalindromicSubstring {
             return "";
         }
 
-        List<String> stringList = new ArrayList<>();
-
-        int pointer1 = 0;
-        int pointer2 = s.length() - 1;
-
-        String ss = "";
-
-        while (pointer1 < pointer2) {
-            if (s.charAt(pointer1) == s.charAt(pointer2)) {
-                System.out.println("p1 = " + s.charAt(pointer1));
-                System.out.println("p2 =" + s.charAt(pointer2));
-            } else {
-                pointer1++;
-            }
-            pointer2--;
+        if (s.length() == 1) {
+            return s;
         }
 
-        int index = 0;
-        int max = 0;
-        for (int i = 0; i < stringList.size(); i++) {
-            if (stringList.get(i).length() > max) {
-                max = stringList.get(i).length();
-                index = i;
+        if (s.length() == 2) {
+            if (s.charAt(0) == s.charAt(1)) {
+                return s;
             }
+            return s.substring(0, 1);
+        }
+
+        boolean f = true;
+
+        for (int i = 1; i < s.length(); i++) {
+            if (s.charAt(i) != s.charAt(0)) {
+                f = false;
+            }
+        }
+
+        if (f) {
+            return s;
+        }
+
+        Set<String> stringSet = new HashSet<>();
+
+        for (int i = 0; i < s.length(); i++) {
+            for (int j = s.length() - 1; j > i; j--) {
+                if (s.charAt(i) == s.charAt(j)) {
+
+                    int pS = i;
+                    int pE = j;
+
+                    boolean flag = true;
+
+                    while (pS < pE) {
+                        if (s.charAt(pS) != s.charAt(pE)) {
+                            flag = false;
+                        }
+                        pS++;
+                        pE--;
+                    }
+
+                    if (flag == true) {
+                        stringSet.add(s.substring(i, j + 1));
+                    }
+                }
+            }
+        }
+
+        String result = "";
+
+        int max = 0;
+
+        for (String str : stringSet) {
+            if (str.length() > max) {
+                max = str.length();
+                result = str;
+            }
+        }
+
+        if (stringSet.isEmpty()) {
+            return s.substring(0, 1);
         }
 
         return result;
